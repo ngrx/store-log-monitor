@@ -10,7 +10,7 @@
     "build_test": "npm run clean_test && tsc -p spec",
     "build_dist": "rm -rf dist && tsc",
     "prepublish": "npm run typings && npm run build_dist",
-    "lint": "tslint src/**.ts",
+    "lint": "tslint src/*/**.ts",
     "typings": "typings install && npm run clean_ng2"
   },
   "repository": {
