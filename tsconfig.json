@@ -15,10 +15,10 @@
 		"src/store/backend.ts",
 		"src/store/utils.ts",
 		"src/store/index.ts",
-		"src/log-monitor/index.ts",
-		"src/log-monitor/log-entry-item.ts",
-		"src/log-monitor/log-monitor-button.ts",
-		"src/log-monitor/log-monitor-entry.ts"
+		"src/monitors/log-monitor/index.ts",
+		"src/monitors/log-monitor/log-entry-item.ts",
+		"src/monitors/log-monitor/log-monitor-button.ts",
+		"src/monitors/log-monitor/log-monitor-entry.ts"
 	],
 	"exclude": [
 		"node_modules"
