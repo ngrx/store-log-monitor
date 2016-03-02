@@ -67,11 +67,11 @@ export class StoreDevtools extends BehaviorSubject<WrappedState> {
     this._init();
   }
 
-  dispatch(action){
+  dispatch(action) {
     this._dispatcher.next(action);
   }
 
-  next(action: any){
+  next(action: any) {
     this._dispatcher.next(action);
   }
 }

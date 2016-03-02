@@ -5,7 +5,7 @@ import {StoreDevtools} from './backend';
 
 const MONITOR_REDUCER = new OpaqueToken('@ngrx/devtools/store/monitor-reducer');
 
-function instrumentStore(_monitorReducer: any = T => T){
+function instrumentStore(_monitorReducer: any = T => T) {
   return [
     provide(store.StoreBackend, {
       deps: [
@@ -16,7 +16,7 @@ function instrumentStore(_monitorReducer: any = T => T){
         store.RESOLVED_POST_MIDDLEWARE,
         MONITOR_REDUCER
       ],
-      useFactory(reducer, dispatcher, initialState, preMiddleware, postMiddleware, monitorReducer){
+      useFactory(reducer, dispatcher, initialState, preMiddleware, postMiddleware, monitorReducer) {
         return new StoreDevtools(
           reducer,
           dispatcher,

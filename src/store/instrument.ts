@@ -136,7 +136,7 @@ export function liftAction(action) {
   return StoreDevtoolActions.performAction(action);
 }
 
-export interface WrappedState{
+export interface WrappedState {
   monitorState: any;
   nextActionId: number;
   actionsById: { [id: number]: { action: Action } };
