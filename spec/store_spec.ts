@@ -139,18 +139,18 @@ describe('instrument', () => {
     store.dispatch({ type: 'INCREMENT' });
 
     expect(store.getValue()).toBe(2);
-    expect(devtools.state$.getValue().stagedActionIds).toEqual([0, 1, 2, 3, 4]);
-    expect(devtools.state$.getValue().skippedActionIds).toEqual([]);
+    expect(devtools.getValue().stagedActionIds).toEqual([0, 1, 2, 3, 4]);
+    expect(devtools.getValue().skippedActionIds).toEqual([]);
 
     devtools.dispatch(StoreDevtoolActions.toggleAction(2));
     expect(store.getValue()).toBe(3);
-    expect(devtools.state$.getValue().stagedActionIds).toEqual([0, 1, 2, 3, 4]);
-    expect(devtools.state$.getValue().skippedActionIds).toEqual([2]);
+    expect(devtools.getValue().stagedActionIds).toEqual([0, 1, 2, 3, 4]);
+    expect(devtools.getValue().skippedActionIds).toEqual([2]);
 
     devtools.dispatch(StoreDevtoolActions.sweep());
     expect(store.getValue()).toBe(3);
-    expect(devtools.state$.getValue().stagedActionIds).toEqual([0, 1, 3, 4]);
-    expect(devtools.state$.getValue().skippedActionIds).toEqual([]);
+    expect(devtools.getValue().stagedActionIds).toEqual([0, 1, 3, 4]);
+    expect(devtools.getValue().skippedActionIds).toEqual([]);
   });
 
   it('should jump to state', () => {
@@ -193,7 +193,7 @@ describe('instrument', () => {
     store.dispatch({ type: 'DECREMENT' });
     store.dispatch({ type: 'INCREMENT' });
 
-    let { computedStates } = devtools.state$.getValue();
+    let { computedStates } = devtools.getValue();
     expect(computedStates[2].error).toMatch(
       /ReferenceError/
     );
@@ -213,7 +213,7 @@ describe('instrument', () => {
     );
   });
 
-  xit('should return the last non-undefined state from getValue', () => {
+  it('should return the last non-undefined state from getValue', () => {
     let { store } = createStore(counterWithBug);
     store.dispatch({ type: 'INCREMENT' });
     store.dispatch({ type: 'INCREMENT' });
@@ -277,7 +277,7 @@ describe('instrument', () => {
     store.dispatch({ type: 'INCREMENT' });
     expect(reducerCalls).toBe(4);
 
-    let savedComputedStates = devtools.state$.getValue().computedStates;
+    let savedComputedStates = devtools.getValue().computedStates;
 
     devtools.dispatch(StoreDevtoolActions.jumpToState(0));
     expect(reducerCalls).toBe(4);
@@ -288,7 +288,7 @@ describe('instrument', () => {
     devtools.dispatch(StoreDevtoolActions.jumpToState(3));
     expect(reducerCalls).toBe(4);
 
-    expect(devtools.state$.getValue().computedStates).toBe(savedComputedStates);
+    expect(devtools.getValue().computedStates).toBe(savedComputedStates);
   });
 
   it('should not recompute states on monitor actions', () => {
@@ -302,7 +302,7 @@ describe('instrument', () => {
     store.dispatch({ type: 'INCREMENT' });
     expect(reducerCalls).toBe(4);
 
-    let savedComputedStates = devtools.state$.getValue().computedStates;
+    let savedComputedStates = devtools.getValue().computedStates;
 
     devtools.dispatch({ type: 'lol' });
     expect(reducerCalls).toBe(4);
@@ -310,7 +310,7 @@ describe('instrument', () => {
     devtools.dispatch({ type: 'wat' });
     expect(reducerCalls).toBe(4);
 
-    expect(devtools.state$.getValue().computedStates).toBe(savedComputedStates);
+    expect(devtools.getValue().computedStates).toBe(savedComputedStates);
   });
 
   describe('Import State', () => {
@@ -321,14 +321,14 @@ describe('instrument', () => {
       store.dispatch({ type: 'INCREMENT' });
       store.dispatch({ type: 'INCREMENT' });
 
-      exportedState = devtools.state$.getValue();
+      exportedState = devtools.getValue();
     });
 
     it('should replay all the steps when a state is imported', () => {
       let {store, devtools} = createStore(counter);
 
       devtools.dispatch(StoreDevtoolActions.importState(exportedState));
-      expect(devtools.state$.getValue()).toEqual(exportedState);
+      expect(devtools.getValue()).toEqual(exportedState);
     });
 
     it('should replace the existing action log with the one imported', () => {
@@ -338,7 +338,7 @@ describe('instrument', () => {
       store.dispatch({ type: 'DECREMENT' });
 
       devtools.dispatch(StoreDevtoolActions.importState(exportedState));
-      expect(devtools.state$.getValue()).toEqual(exportedState);
+      expect(devtools.getValue()).toEqual(exportedState);
     });
   });
 });
