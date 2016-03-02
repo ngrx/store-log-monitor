@@ -13,8 +13,7 @@
     "src/index.ts",
 		"src/store/instrument.ts",
 		"src/store/backend.ts",
-		"src/store/devtools.ts",
-		"src/store/util.ts",
+		"src/store/utils.ts",
 		"src/store/index.ts"
 	],
 	"exclude": [
