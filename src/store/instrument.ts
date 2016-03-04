@@ -136,7 +136,7 @@ export function liftAction(action) {
   return StoreDevtoolActions.performAction(action);
 }
 
-export interface WrappedState {
+export interface LiftedState {
   monitorState: any;
   nextActionId: number;
   actionsById: { [id: number]: { action: Action } };
@@ -151,7 +151,7 @@ export interface WrappedState {
 * Creates a history state reducer from an app's reducer.
 */
 export function liftReducerWith(reducer, initialCommittedState?: any, monitorReducer?: any) {
-  const initialLiftedState: WrappedState = {
+  const initialLiftedState: LiftedState = {
     monitorState: monitorReducer(undefined, {}),
     nextActionId: 1,
     actionsById: { 0: liftAction(INIT_ACTION) },
@@ -165,7 +165,7 @@ export function liftReducerWith(reducer, initialCommittedState?: any, monitorRed
   /**
   * Manages how the history actions modify the history state.
   */
-  return (liftedState = initialLiftedState, liftedAction): WrappedState => {
+  return (liftedState = initialLiftedState, liftedAction): LiftedState => {
     let {
       monitorState,
       actionsById,
@@ -312,7 +312,7 @@ export function liftReducerWith(reducer, initialCommittedState?: any, monitorRed
 /**
  * Provides an app's view into the state of the lifted store.
  */
-export function unliftState(liftedState: WrappedState) {
+export function unliftState(liftedState: LiftedState) {
   const { computedStates, currentStateIndex } = liftedState;
   const { state } = computedStates[currentStateIndex];
   return state;

@@ -33,4 +33,4 @@ function instrumentStore(_monitorReducer: any = T => T) {
 }
 
 export { instrumentStore, StoreDevtools };
-export { WrappedState, StoreDevtoolActions } from './instrument';
+export { LiftedState, StoreDevtoolActions } from './instrument';

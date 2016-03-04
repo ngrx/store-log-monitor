@@ -1,6 +1,6 @@
 {
-  "name": "@ngrx/devtools",
-  "version": "0.0.1",
+  "name": "ngrx-store-devtools-next",
+  "version": "0.0.2",
   "description": "Developer tools for @ngrx projects",
   "main": "./dist/index.js",
   "scripts": {

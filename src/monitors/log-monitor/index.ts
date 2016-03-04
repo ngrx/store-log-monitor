@@ -2,7 +2,7 @@ import {Inject, Component, ViewEncapsulation, ChangeDetectionStrategy} from 'ang
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import {StoreDevtoolActions, StoreDevtools} from '../../store';
+import {StoreDevtools} from '../../store';
 import {LogEntryItem} from './log-entry-item';
 import {LogMonitorEntry} from './log-monitor-entry';
 import {LogMonitorButton} from './log-monitor-button';
@@ -77,16 +77,16 @@ import {LogMonitorButton} from './log-monitor-button';
 })
 export class LogMonitor{
   private items$: Observable<LogEntryItem[]>;
-  private canRevert$: Observable<boolean>;
+  private canRevert$ = this.devtools.liftedState.map(s => !(s.computedStates.length > 1));
   private canSweep$: Observable<boolean>;
   private canCommit$: Observable<boolean>;
 
-  constructor(private store: StoreDevtools){
-    this.canRevert$ = store.map(s => !(s.computedStates.length > 1));
-    this.canSweep$ = store.map(s => !(s.skippedActionIds.length > 0));
-    this.canCommit$ = store.map(s => !(s.computedStates.length > 1));
+  constructor(private devtools: StoreDevtools){
+    this.canRevert$ =
+    this.canSweep$ = devtools.liftedState.map(s => !(s.skippedActionIds.length > 0));
+    this.canCommit$ = devtools.liftedState.map(s => !(s.computedStates.length > 1));
 
-    this.items$ = store
+    this.items$ = devtools.liftedState
       .map(({ actionsById, skippedActionIds, stagedActionIds, computedStates }) => {
         const actions = [];
 
@@ -115,22 +115,22 @@ export class LogMonitor{
   }
 
   handleToggle(id: number){
-    this.store.dispatch(StoreDevtoolActions.toggleAction(id));
+    this.devtools.toggleAction(id);
   }
 
   handleReset(){
-    this.store.dispatch(StoreDevtoolActions.reset());
+    this.devtools.reset();
   }
 
   handleRollback(){
-    this.store.dispatch(StoreDevtoolActions.rollback());
+    this.devtools.rollback();
   }
 
   handleSweep(){
-    this.store.dispatch(StoreDevtoolActions.sweep());
+    this.devtools.sweep();
   }
 
   handleCommit(){
-    this.store.dispatch(StoreDevtoolActions.commit());
+    this.devtools.commit();
   }
 }

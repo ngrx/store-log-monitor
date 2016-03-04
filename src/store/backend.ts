@@ -1,5 +1,6 @@
 import {Subject} from 'rxjs/Subject';
 import {BehaviorSubject} from 'rxjs/subject/BehaviorSubject';
+import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/let';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/merge';
@@ -8,11 +9,13 @@ import 'rxjs/add/operator/filter';
 
 import {Dispatcher, Middleware, Reducer} from '@ngrx/store';
 import {ActionTypes} from '@ngrx/store/dist/store-backend';
-import {liftAction, unliftState, liftReducerWith, WrappedState} from './instrument';
+import {liftAction, unliftState, liftReducerWith, LiftedState, StoreDevtoolActions as actions} from './instrument';
 
-export class StoreDevtools extends BehaviorSubject<WrappedState> {
-  private _reducer: Reducer<WrappedState>;
-  private _initialLiftedState: WrappedState;
+export class StoreDevtools implements Observer<any> {
+  public liftedState: BehaviorSubject<LiftedState>;
+
+  private _reducer: Reducer<LiftedState>;
+  private _initialLiftedState: LiftedState;
   private _liftedDispatcher: Dispatcher<any>;
   private _initialState: any;
   private _preMiddleware: Middleware;
@@ -31,8 +34,7 @@ export class StoreDevtools extends BehaviorSubject<WrappedState> {
     const reducer = liftReducerWith(_reducer, _initialState, _monitorReducer);
     const initialLiftedState = reducer(undefined, { type: ActionTypes.INIT });
 
-    super(initialLiftedState);
-
+    this.liftedState = new BehaviorSubject(initialLiftedState);
     this._reducer = reducer;
     this._initialLiftedState = initialLiftedState;
     this._liftedDispatcher = _dispatcher;
@@ -51,8 +53,8 @@ export class StoreDevtools extends BehaviorSubject<WrappedState> {
       .let(this._preMiddleware)
       .map(liftAction)
       .merge(this._dispatcher)
-      .scan((state: WrappedState, action) => this._reducer(state, action), this._initialLiftedState)
-      .do((liftedState: WrappedState) => super.next(liftedState))
+      .scan((state: LiftedState, action) => this._reducer(state, action), this._initialLiftedState)
+      .do((liftedState: LiftedState) => this.liftedState.next(liftedState))
       .map(unliftState)
       .filter(state => state !== undefined)
       .let(this._postMiddleware)
@@ -73,5 +75,45 @@ export class StoreDevtools extends BehaviorSubject<WrappedState> {
 
   next(action: any) {
     this._dispatcher.next(action);
+  }
+
+  error(error: any) {
+    this._dispatcher.next(error);
+  }
+
+  complete() {
+    this._dispatcher.complete();
+  }
+
+  performAction(action: any) {
+    this.dispatch(actions.performAction(action));
+  }
+
+  reset() {
+    this.dispatch(actions.reset());
+  }
+
+  rollback() {
+    this.dispatch(actions.rollback());
+  }
+
+  commit() {
+    this.dispatch(actions.commit());
+  }
+
+  sweep() {
+    this.dispatch(actions.sweep());
+  }
+
+  toggleAction(id: number) {
+    this.dispatch(actions.toggleAction(id));
+  }
+
+  jumpToState(index: number) {
+    this.dispatch(actions.jumpToState(index));
+  }
+
+  importState(nextLiftedState: any) {
+    this.dispatch(actions.importState(nextLiftedState));
   }
 }
