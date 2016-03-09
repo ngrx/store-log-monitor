@@ -17,13 +17,11 @@ import {LogMonitorButton} from './log-monitor-button';
       display: block;
       background-color: #2A2F3A;
       font-family: 'monaco', 'Consolas', 'Lucida Console', monospace;
-      position: absolute;
-      top: 0;
-      right: 0;
+      position: relative;
       overflow-y: hidden;
       width: 100%;
       height: 100%;
-      max-width: 300px;
+      min-width: 300px;
       direction: ltr;
     }
 

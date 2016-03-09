@@ -18,7 +18,14 @@
 		"src/monitors/log-monitor/index.ts",
 		"src/monitors/log-monitor/log-entry-item.ts",
 		"src/monitors/log-monitor/log-monitor-button.ts",
-		"src/monitors/log-monitor/log-monitor-entry.ts"
+		"src/monitors/log-monitor/log-monitor-entry.ts",
+		"src/monitors/dock-monitor/actions.ts",
+		"src/monitors/dock-monitor/commander.ts",
+		"src/monitors/dock-monitor/dock.ts",
+		"src/monitors/dock-monitor/index.ts",
+		"src/monitors/dock-monitor/monitor.ts",
+		"src/monitors/dock-monitor/parse-key.ts",
+		"src/monitors/dock-monitor/reducer.ts"
 	],
 	"exclude": [
 		"node_modules"
