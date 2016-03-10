@@ -11,20 +11,23 @@
 	"files": [
     "typings/main.d.ts",
     "src/index.ts",
+
+		"src/store/actions.ts",
+		"src/store/devtools.ts",
 		"src/store/instrument.ts",
-		"src/store/backend.ts",
+		"src/store/reducer.ts",
 		"src/store/utils.ts",
-		"src/store/index.ts",
-		"src/monitors/log-monitor/index.ts",
+
+		"src/monitors/log-monitor/log-monitor.ts",
 		"src/monitors/log-monitor/log-entry-item.ts",
 		"src/monitors/log-monitor/log-monitor-button.ts",
 		"src/monitors/log-monitor/log-monitor-entry.ts",
+
 		"src/monitors/dock-monitor/actions.ts",
 		"src/monitors/dock-monitor/commander.ts",
+		"src/monitors/dock-monitor/dock-monitor.ts",
 		"src/monitors/dock-monitor/dock.ts",
-		"src/monitors/dock-monitor/index.ts",
-		"src/monitors/dock-monitor/monitor.ts",
-		"src/monitors/dock-monitor/parse-key.ts",
+		"src/monitors/dock-monitor/keycodes.ts",
 		"src/monitors/dock-monitor/reducer.ts"
 	],
 	"exclude": [

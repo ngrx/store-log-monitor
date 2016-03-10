@@ -2,7 +2,7 @@ import {Inject, Component, ViewEncapsulation, ChangeDetectionStrategy} from 'ang
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import {StoreDevtools} from '../../store';
+import {StoreDevtools} from '../../store/devtools';
 import {LogEntryItem} from './log-entry-item';
 import {LogMonitorEntry} from './log-monitor-entry';
 import {LogMonitorButton} from './log-monitor-button';
