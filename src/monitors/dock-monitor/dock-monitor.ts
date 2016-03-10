@@ -20,8 +20,8 @@ import {DockActions} from './actions';
   directives: [ Dock, Commander ],
   providers: [ DockActions ],
   template: `
-    <ngrx-commander [command]="toggleCommand" (press)="toggle$.next($event)"></ngrx-commander>
-    <ngrx-commander [command]="positionCommand" (press)="changePosition$.next($event)"></ngrx-commander>
+    <ngrx-commander [shortcut]="toggleCommand" (command)="toggle$.next($event)"></ngrx-commander>
+    <ngrx-commander [shortcut]="positionCommand" (command)="changePosition$.next($event)"></ngrx-commander>
 
     <ngrx-dock
       [visible]="visible$ | async"
@@ -34,8 +34,7 @@ import {DockActions} from './actions';
 export class DockMonitor {
   constructor(
     private tools: StoreDevtools,
-    private actions: DockActions,
-    private commander: Commander
+    private actions: DockActions
   ){
     Observable
       .merge(this.toggleAction$, this.positionAction$)

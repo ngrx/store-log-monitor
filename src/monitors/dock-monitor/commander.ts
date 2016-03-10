@@ -21,7 +21,7 @@ export interface ParsedCommand{
   template: '',
   styles: [':host{ display: none }'],
   host: {
-    '(document.keydown)': 'keydown$.next($event)'
+    '(document:keydown)': 'keydown$.next($event)'
   }
 })
 export class Commander{
@@ -30,12 +30,12 @@ export class Commander{
 
   constructor(private _renderer: Renderer){ }
 
-  @Input() command: string;
-  @Output() press = this.keydown$
+  @Input() shortcut: string;
+  @Output() command = this.keydown$
     .filter(e => this._ignoreTags.indexOf((e.target as HTMLElement).tagName) < 0)
     .filter(e => !((e.target as HTMLElement).isContentEditable))
     .filter(e => {
-      const command = this.parseCommand(this.command);
+      const command = this.parseCommand(this.shortcut);
 
       if (!command) {
         return false;
@@ -52,7 +52,7 @@ export class Commander{
     .map(e => {
       e.preventDefault();
 
-      return { command: this.command };
+      return { command: this.shortcut };
     });
 
   parseCommand(s: string): ParsedCommand {
