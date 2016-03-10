@@ -18,6 +18,8 @@
 		"src/store/reducer.ts",
 		"src/store/utils.ts",
 
+		"src/monitors/devtools.ts",
+
 		"src/monitors/log-monitor/log-monitor.ts",
 		"src/monitors/log-monitor/log-entry-item.ts",
 		"src/monitors/log-monitor/log-monitor-button.ts",
