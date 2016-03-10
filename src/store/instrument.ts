@@ -2,10 +2,15 @@ import {provide, Provider, OpaqueToken} from 'angular2/core';
 import * as store from '@ngrx/store';
 
 import {StoreDevtools} from './devtools';
+import {dockReducer} from '../monitors/dock-monitor/reducer';
 
 const MONITOR_REDUCER = new OpaqueToken('@ngrx/devtools/store/monitor-reducer');
 
-export function instrumentStore(_monitorReducer: any = T => T) {
+export function instrumentStore(_monitorReducer: any = { dock: dockReducer }) {
+  const reducer = typeof _monitorReducer === 'function'
+    ? _monitorReducer
+    : store.combineReducers(_monitorReducer);
+
   return [
     provide(store.StoreBackend, {
       deps: [
@@ -28,6 +33,6 @@ export function instrumentStore(_monitorReducer: any = T => T) {
       }
     }),
     provide(StoreDevtools, { useExisting: store.StoreBackend }),
-    provide(MONITOR_REDUCER, { useValue: _monitorReducer })
+    provide(MONITOR_REDUCER, { useValue: reducer })
   ];
 }
