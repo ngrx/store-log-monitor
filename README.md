@@ -6,32 +6,26 @@
 
 Devtools for @ngrx projects.
 
-## @ngrx/store Instrumentation
-Devtools currently export experimental instrumentation tools for @ngrx/store. To use them,
-import `instrumentStore` and use it when providing your @ngrx/store:
+## Available Devtools
+### @ngrx/store Instrumentation
+To instrument your @ngrx/store and use the devtools, simply call `instrumentStore()` after you call `provideStore()` then use the `Devtools` component:
 
 ```ts
-boostrap(App, [ provideStore(reducer), instrumentStore() ]);
+import {Devtools, instrumentStore} from '@ngrx/devtools';
+
+@Component({
+	selector: 'app',
+	providers: [
+		provideStore(reducer),
+		instrumentStore()
+	],
+	directives: [ Devtools ],
+	template: `
+		<ngrx-devtools></ngrx-devtools>
+	`
+})
+export class App{ ... }
 ```
-
-Then use the `StoreDevtools` service and accompanying `StoreDevtoolActions` to interact with the lifted store:
-
-```ts
-import {StoreDevtools, StoreDevtoolActions} from '@ngrx/devtools';
-
-@Component({ ... })
-class Monitor{
-	constructor(private devtools: StoreDevtools){
-		this.devtools.state$.subscribe(liftedState => console.log(liftedState));
-	}
-
-	reset(){
-		this.devtools.dispatch(StoreDevtoolActions.reset());
-	}
-}
-```
-
-The exported action types and resultant lifted state are currently identical to [redux-devtools](https://github.com/gaearon/redux-devtools).
 
 ## Contributing
 
