@@ -1,11 +1,11 @@
 declare var describe, it, expect, hot, cold, expectObservable, expectSubscriptions, console, beforeEach;
 require('es6-shim');
-import 'reflect-metadata';
+require('reflect-metadata');
 import {Observable} from 'rxjs/Observable';
 import {Injector, provide} from 'angular2/core';
 import {Dispatcher, provideStore, Store, StoreBackend} from '@ngrx/store';
 
-import { StoreDevtoolActions, StoreDevtools, instrumentStore } from '../src/store';
+import { StoreDevtools, instrumentStore } from '../src';
 
 function counter(state = 0, action) {
   switch (action.type) {
@@ -80,20 +80,20 @@ describe('instrument', () => {
     store.dispatch({ type: 'INCREMENT' });
     expect(store.getValue()).toBe(2);
 
-    devtools.dispatch(StoreDevtoolActions.commit());
+    devtools.commit();
     expect(store.getValue()).toBe(2);
 
     store.dispatch({ type: 'INCREMENT' });
     store.dispatch({ type: 'INCREMENT' });
     expect(store.getValue()).toBe(4);
 
-    devtools.dispatch(StoreDevtoolActions.rollback());
+    devtools.rollback();
     expect(store.getValue()).toBe(2);
 
     store.dispatch({ type: 'DECREMENT' });
     expect(store.getValue()).toBe(1);
 
-    devtools.dispatch(StoreDevtoolActions.rollback());
+    devtools.rollback();
     expect(store.getValue()).toBe(2);
   });
 
@@ -101,19 +101,19 @@ describe('instrument', () => {
     store.dispatch({ type: 'INCREMENT' });
     expect(store.getValue()).toBe(1);
 
-    devtools.dispatch(StoreDevtoolActions.commit());
+    devtools.commit();
     expect(store.getValue()).toBe(1);
 
     store.dispatch({ type: 'INCREMENT' });
     expect(store.getValue()).toBe(2);
 
-    devtools.dispatch(StoreDevtoolActions.rollback());
+    devtools.rollback();
     expect(store.getValue()).toBe(1);
 
     store.dispatch({ type: 'INCREMENT' });
     expect(store.getValue()).toBe(2);
 
-    devtools.dispatch(StoreDevtoolActions.reset());
+    devtools.reset();
     expect(store.getValue()).toBe(0);
   });
 
@@ -124,10 +124,10 @@ describe('instrument', () => {
     store.dispatch({ type: 'INCREMENT' });
     expect(store.getValue()).toBe(1);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(2));
+    devtools.toggleAction(2);
     expect(store.getValue()).toBe(2);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(2));
+    devtools.toggleAction(2);
     expect(store.getValue()).toBe(1);
   });
 
@@ -142,12 +142,12 @@ describe('instrument', () => {
     expect(devtools.liftedState.getValue().stagedActionIds).toEqual([0, 1, 2, 3, 4]);
     expect(devtools.liftedState.getValue().skippedActionIds).toEqual([]);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(2));
+    devtools.toggleAction(2);
     expect(store.getValue()).toBe(3);
     expect(devtools.liftedState.getValue().stagedActionIds).toEqual([0, 1, 2, 3, 4]);
     expect(devtools.liftedState.getValue().skippedActionIds).toEqual([2]);
 
-    devtools.dispatch(StoreDevtoolActions.sweep());
+    devtools.sweep();
     expect(store.getValue()).toBe(3);
     expect(devtools.liftedState.getValue().stagedActionIds).toEqual([0, 1, 3, 4]);
     expect(devtools.liftedState.getValue().skippedActionIds).toEqual([]);
@@ -159,19 +159,19 @@ describe('instrument', () => {
     store.dispatch({ type: 'INCREMENT' });
     expect(store.getValue()).toBe(1);
 
-    devtools.dispatch(StoreDevtoolActions.jumpToState(0));
+    devtools.jumpToState(0);
     expect(store.getValue()).toBe(0);
 
-    devtools.dispatch(StoreDevtoolActions.jumpToState(1));
+    devtools.jumpToState(1);
     expect(store.getValue()).toBe(1);
 
-    devtools.dispatch(StoreDevtoolActions.jumpToState(2));
+    devtools.jumpToState(2);
     expect(store.getValue()).toBe(0);
 
     store.dispatch({ type: 'INCREMENT' });
     expect(store.getValue()).toBe(0);
 
-    devtools.dispatch(StoreDevtoolActions.jumpToState(4));
+    devtools.jumpToState(4);
     expect(store.getValue()).toBe(2);
   });
 
@@ -235,34 +235,34 @@ describe('instrument', () => {
     store.dispatch({ type: 'INCREMENT' });
     expect(reducerCalls).toBe(4);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(3));
+    devtools.toggleAction(3);
     expect(reducerCalls).toBe(4);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(3));
+    devtools.toggleAction(3);
     expect(reducerCalls).toBe(5);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(2));
+    devtools.toggleAction(2);
     expect(reducerCalls).toBe(6);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(2));
+    devtools.toggleAction(2);
     expect(reducerCalls).toBe(8);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(1));
+    devtools.toggleAction(1);
     expect(reducerCalls).toBe(10);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(2));
+    devtools.toggleAction(2);
     expect(reducerCalls).toBe(11);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(3));
+    devtools.toggleAction(3);
     expect(reducerCalls).toBe(11);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(1));
+    devtools.toggleAction(1);
     expect(reducerCalls).toBe(12);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(3));
+    devtools.toggleAction(3);
     expect(reducerCalls).toBe(13);
 
-    devtools.dispatch(StoreDevtoolActions.toggleAction(2));
+    devtools.toggleAction(2);
     expect(reducerCalls).toBe(15);
   });
 
@@ -279,13 +279,13 @@ describe('instrument', () => {
 
     let savedComputedStates = devtools.liftedState.getValue().computedStates;
 
-    devtools.dispatch(StoreDevtoolActions.jumpToState(0));
+    devtools.jumpToState(0);
     expect(reducerCalls).toBe(4);
 
-    devtools.dispatch(StoreDevtoolActions.jumpToState(1));
+    devtools.jumpToState(1);
     expect(reducerCalls).toBe(4);
 
-    devtools.dispatch(StoreDevtoolActions.jumpToState(3));
+    devtools.jumpToState(3);
     expect(reducerCalls).toBe(4);
 
     expect(devtools.liftedState.getValue().computedStates).toBe(savedComputedStates);
@@ -327,7 +327,7 @@ describe('instrument', () => {
     it('should replay all the steps when a state is imported', () => {
       let {store, devtools} = createStore(counter);
 
-      devtools.dispatch(StoreDevtoolActions.importState(exportedState));
+      devtools.importState(exportedState);
       expect(devtools.liftedState.getValue()).toEqual(exportedState);
     });
 
@@ -337,7 +337,7 @@ describe('instrument', () => {
       store.dispatch({ type: 'DECREMENT' });
       store.dispatch({ type: 'DECREMENT' });
 
-      devtools.dispatch(StoreDevtoolActions.importState(exportedState));
+      devtools.importState(exportedState);
       expect(devtools.liftedState.getValue()).toEqual(exportedState);
     });
   });
