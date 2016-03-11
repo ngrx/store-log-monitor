@@ -9,7 +9,9 @@ import 'rxjs/add/operator/filter';
 
 import {Dispatcher, Middleware, Reducer} from '@ngrx/store';
 import {ActionTypes} from '@ngrx/store/dist/store-backend';
-import {liftAction, unliftState, liftReducerWith, LiftedState, StoreDevtoolActions as actions} from './instrument';
+import {liftReducerWith, LiftedState} from './reducer';
+import {StoreDevtoolActions as actions} from './actions';
+import {liftAction, unliftState} from './utils';
 
 export class StoreDevtools implements Observer<any> {
   public liftedState: BehaviorSubject<LiftedState>;

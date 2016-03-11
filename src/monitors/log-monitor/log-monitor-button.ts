@@ -43,7 +43,7 @@ export class LogMonitorButton{
   @HostBinding('class.disabled') @Input() disabled: boolean;
   @Output() action = new EventEmitter();
 
-  @HostListener('click', ['$event']) handleAction($event: Event){
+  @HostListener('click', ['$event']) handleAction($event){
     if(!this.disabled){
       this.action.next({});
     }
