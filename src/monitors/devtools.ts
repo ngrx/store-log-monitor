@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, Input} from 'angular2/core';
 import {LogMonitor} from './log-monitor/log-monitor';
 import {DockMonitor} from './dock-monitor/dock-monitor';
 
@@ -6,9 +6,12 @@ import {DockMonitor} from './dock-monitor/dock-monitor';
   selector: 'ngrx-devtools',
   directives: [ LogMonitor, DockMonitor ],
   template: `
-    <dock-monitor>
+    <dock-monitor [toggleCommand]="toggleCommand" [positionCommand]="positionCommand">
       <log-monitor></log-monitor>
     </dock-monitor>
   `
 })
-export class Devtools{ }
+export class Devtools{
+  @Input('toggle-command') toggleCommand: string = 'ctrl-h';
+  @Input('position-command') positionCommand: string = 'ctrl-m';
+}
