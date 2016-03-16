@@ -3,7 +3,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/distinctUntilChanged';
 import {StoreDevtools} from '../../store/devtools';
-import {Component, ChangeDetectionStrategy} from 'angular2/core';
+import {Component, ChangeDetectionStrategy, Input} from 'angular2/core';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import {Subscription} from 'rxjs/Subscription';
@@ -32,6 +32,9 @@ import {DockActions} from './actions';
   `
 })
 export class DockMonitor {
+  @Input() toggleCommand: string;
+  @Input() positionCommand: string;
+
   constructor(
     private tools: StoreDevtools,
     private actions: DockActions
@@ -46,12 +49,10 @@ export class DockMonitor {
   private position$ = this.state$.map(s => s.position).distinctUntilChanged();
   private size$ = this.state$.map(s => s.size).distinctUntilChanged();
 
-  private toggleCommand = 'ctrl-h';
   private toggle$ = new Subject();
   private toggleAction$ = this.toggle$
     .map(() => this.actions.toggleVisibility());
 
-  private positionCommand = 'ctrl-m';
   private changePosition$ = new Subject();
   private positionAction$ = this.changePosition$
     .map(() => this.actions.changePosition());
