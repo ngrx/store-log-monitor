@@ -10,6 +10,7 @@
 	"files": [
     "../typings/main.d.ts",
 		"helpers/test-helper.ts",
-		"store_spec.ts"
+		"store_spec.ts",
+		"config_spec.ts"
 	]
 }
