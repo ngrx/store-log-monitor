@@ -2,11 +2,11 @@ declare var describe, it, expect, console, beforeEach;
 require('es6-shim');
 require('reflect-metadata');
 
-import { devtoolsConfig } from '../src';
+import { devtoolsConfig, DevConfig } from '../src';
 import { config } from '../src/monitors/config';
 
 describe('Config', () => {
-  let defaultConfig = {
+  let defaultConfig: DevConfig = {
     position: 'right',
     visible: true,
     size: 0.3
@@ -29,7 +29,7 @@ describe('Config', () => {
   });
 
   it('should update the default settings', () => {
-    let updatedConfig = {
+    let updatedConfig: DevConfig = {
       position: 'bottom',
       visible: false,
       size: 0.5

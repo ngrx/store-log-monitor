@@ -5,7 +5,7 @@ import {DevConfig, config} from '../config';
 export const POSITIONS = ['left', 'top', 'right', 'bottom'];
 export type PositionsType = 'left' | 'top' | 'right' | 'bottom';
 
-function position(state: PositionsType = (<PositionsType>config.position), action) {
+function position(state: PositionsType = config.position, action) {
   return (action.type === DockActions.CHANGE_POSITION) ?
     POSITIONS[(POSITIONS.indexOf(state) + 1) % POSITIONS.length] :
     state;

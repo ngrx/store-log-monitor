@@ -1,5 +1,7 @@
+import { PositionsType } from './dock-monitor/reducer';
+
 export interface DevConfig {
-  position?: string;
+  position?: PositionsType;
   visible?: boolean;
   size?: number;
 }
