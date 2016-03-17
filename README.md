@@ -29,14 +29,14 @@ export class App{ ... }
 
 ### Customization
 To customize the default layout for the devtools, import the `devtoolsConfig` function, add it to providers with an object with  `position` (top, bottom, left, right), `size` (0.3) and `visible` (true).
-To set different commands for toggling dock visibility and position, use the `toggle-command` and `position-command` inputs on the `ngrx-devtools` component:
+To set different commands for toggling dock visibility and position, use the `toggle-command` (ctrl-h) and `position-command` (ctrl-m) inputs on the `ngrx-devtools` component:
 
 ```ts
 import {Devtools, instrumentStore, devtoolsConfig} from '@ngrx/devtools';
 
 @Component({
 	providers: [
-	  instrumentStore(),
+		instrumentStore(),
 		devtoolsConfig({
 			position: 'bottom',
 			visible: false,
