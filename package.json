@@ -1,6 +1,6 @@
 {
   "name": "@ngrx/devtools",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Developer tools for @ngrx projects",
   "main": "./dist/index.js",
   "scripts": {
