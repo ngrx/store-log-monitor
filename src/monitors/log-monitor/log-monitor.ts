@@ -1,4 +1,4 @@
-import {Inject, Component, ViewEncapsulation, ChangeDetectionStrategy} from 'angular2/core';
+import {Inject, Component, ViewEncapsulation, ChangeDetectionStrategy} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
@@ -66,7 +66,7 @@ import {LogMonitorButton} from './log-monitor-button';
     </div>
     <div class="elements">
       <log-monitor-entry
-        *ngFor="#item of (items$ | async)"
+        *ngFor="let item of (items$ | async)"
         [item]="item"
         (toggle)="handleToggle($event.id)">
       </log-monitor-entry>
