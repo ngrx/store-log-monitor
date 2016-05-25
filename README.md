@@ -6,6 +6,8 @@
 
 Devtools for @ngrx projects.
 
+## Devtools have not yet been updated for @ngrx/store v2.0. An update is forthcoming.
+
 ## Installation
 `npm install @ngrx/devtools --save-dev`
 
