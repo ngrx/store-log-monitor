@@ -1,5 +1,5 @@
-import {Component, HostListener, HostBinding, Input} from '@angular/core';
-import {PositionsType} from './reducer';
+import { Component, HostBinding, Input } from '@angular/core';
+import { PositionsType } from './reducer';
 
 
 @Component({
@@ -40,7 +40,7 @@ import {PositionsType} from './reducer';
     }
   `]
 })
-export class Dock{
+export class DockComponent {
   @Input() position: PositionsType = 'right';
   @Input() size: number = 0.3;
   @Input() visible: boolean = true;
@@ -70,7 +70,7 @@ export class Dock{
   }
 
   calculatePosition(primary: PositionsType, secondary: PositionsType) {
-    if(this.visible){
+    if (this.visible) {
       switch (this.position) {
         case secondary:
           return this.restSize;

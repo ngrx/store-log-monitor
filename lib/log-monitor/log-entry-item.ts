@@ -1,4 +1,4 @@
-export interface LogEntryItem{
+export interface LogEntryItem {
   key: number;
   action: any;
   actionId: number;

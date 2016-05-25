@@ -1,6 +1,6 @@
 // Most of these are according to this table: http://www.ssicom.org/js/x171166.htm
 // However where nodejs readline diverges, they are adjusted to conform to it
-export const keycodes = {
+export const KEYCODES = {
   nomod: {
     escape: '\u001b',
     space: ' ' // actually '\u0020'
@@ -34,7 +34,7 @@ export const keycodes = {
     'y': '\u0019',
     'z': '\u001a',
     '[': '\u001b',
-    '\\':'\u001c',
+   '\\': '\u001c',
     ']': '\u001d',
     '^': '\u001e',
     '_': '\u001f',

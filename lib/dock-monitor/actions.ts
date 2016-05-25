@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Action} from '@ngrx/store';
+import { Injectable } from '@angular/core';
+import { Action } from '@ngrx/store';
 
 
 @Injectable()
-export class DockActions{
+export class DockActions {
   static TOGGLE_VISIBILITY = '@@redux-devtools-log-monitor/TOGGLE_VISIBILITY';
   toggleVisibility(): Action {
     return { type: DockActions.TOGGLE_VISIBILITY };

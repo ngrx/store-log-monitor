@@ -1,7 +1,5 @@
 import {
   Component,
-  ChangeDetectionStrategy,
-  ViewEncapsulation,
   Input,
   Output,
   EventEmitter,
@@ -11,8 +9,6 @@ import {
 
 @Component({
   selector: 'log-monitor-button',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.Emulated,
   template: `
     <ng-content></ng-content>
   `,
@@ -39,15 +35,17 @@ import {
     }
   `]
 })
-export class LogMonitorButton{
+export class LogMonitorButtonComponent {
   @HostBinding('class.disabled') @Input() disabled: boolean;
   @Output() action = new EventEmitter();
 
-  @HostListener('click', ['$event']) handleAction($event){
-    if(!this.disabled){
+  @HostListener('click', ['$event']) handleAction($event) {
+    if (!this.disabled) {
       this.action.next({});
     }
+
     $event.stopPropagation();
+
     return false;
   }
 }

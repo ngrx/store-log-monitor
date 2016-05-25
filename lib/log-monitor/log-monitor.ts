@@ -1,17 +1,15 @@
-import {Inject, Component, ViewEncapsulation, ChangeDetectionStrategy} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { Component, Input  } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { StoreDevtools } from '@ngrx/store-devtools';
 
-import {StoreDevtools} from '../../store/devtools';
-import {LogEntryItem} from './log-entry-item';
-import {LogMonitorEntry} from './log-monitor-entry';
-import {LogMonitorButton} from './log-monitor-button';
+import { LogEntryItem } from './log-entry-item';
+import { LogMonitorEntryComponent } from './log-monitor-entry';
+import { LogMonitorButtonComponent } from './log-monitor-button';
 
 @Component({
   selector: 'log-monitor',
-  directives: [LogMonitorEntry, LogMonitorButton],
-  encapsulation: ViewEncapsulation.Emulated,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  directives: [ LogMonitorEntryComponent, LogMonitorButtonComponent ],
   styles: [`
     :host {
       display: block;
@@ -25,7 +23,7 @@ import {LogMonitorButton} from './log-monitor-button';
       direction: ltr;
     }
 
-    .button-bar{
+    .button-bar {
       text-align: center;
       border-bottom-width: 1px;
       border-bottom-style: solid;
@@ -36,7 +34,7 @@ import {LogMonitorButton} from './log-monitor-button';
       padding: 0 4px;
     }
 
-    .elements{
+    .elements {
       position: absolute;
       left: 0;
       right: 0;
@@ -66,21 +64,25 @@ import {LogMonitorButton} from './log-monitor-button';
     </div>
     <div class="elements">
       <log-monitor-entry
-        *ngFor="let item of (items$ | async)"
+        *ngFor="let item of (items$ | async); let i = index"
         [item]="item"
+        [disabled]="i === 0"
+        [expandEntries]="expandEntries"
         (toggle)="handleToggle($event.id)">
       </log-monitor-entry>
     </div>
   `
 })
-export class LogMonitor{
+export class LogMonitorComponent {
+  @Input() expandEntries: boolean = true;
+
   private items$: Observable<LogEntryItem[]>;
-  private canRevert$ = this.devtools.liftedState.map(s => !(s.computedStates.length > 1));
+  private canRevert$: Observable<boolean>;
   private canSweep$: Observable<boolean>;
   private canCommit$: Observable<boolean>;
 
-  constructor(private devtools: StoreDevtools){
-    this.canRevert$ =
+  constructor(private devtools: StoreDevtools) {
+    this.canRevert$ = devtools.liftedState.map(s => !(s.computedStates.length > 1 ));
     this.canSweep$ = devtools.liftedState.map(s => !(s.skippedActionIds.length > 0));
     this.canCommit$ = devtools.liftedState.map(s => !(s.computedStates.length > 1));
 
@@ -88,7 +90,7 @@ export class LogMonitor{
       .map(({ actionsById, skippedActionIds, stagedActionIds, computedStates }) => {
         const actions = [];
 
-        for (let i = 0; i < stagedActionIds.length; i++){
+        for (let i = 0; i < stagedActionIds.length; i++) {
           const actionId = stagedActionIds[i];
           const action = actionsById[actionId].action;
           const { state, error } = computedStates[i];
@@ -108,27 +110,27 @@ export class LogMonitor{
           });
         }
 
-        return actions.slice(1);
+        return actions;
       });
   }
 
-  handleToggle(id: number){
+  handleToggle(id: number) {
     this.devtools.toggleAction(id);
   }
 
-  handleReset(){
+  handleReset() {
     this.devtools.reset();
   }
 
-  handleRollback(){
+  handleRollback() {
     this.devtools.rollback();
   }
 
-  handleSweep(){
+  handleSweep() {
     this.devtools.sweep();
   }
 
-  handleCommit(){
+  handleCommit() {
     this.devtools.commit();
   }
 }
