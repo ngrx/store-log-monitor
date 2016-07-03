@@ -37,7 +37,7 @@ import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
 	selector: 'app',
 	directives: [ StoreLogMonitorComponent ],
 	template: `
-		<store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></store-log-monitor>
+		<ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
 	`
 })
 export class App { }
