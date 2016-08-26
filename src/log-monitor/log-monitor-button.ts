@@ -1,11 +1,5 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  HostListener,
-  HostBinding
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener, HostBinding } from '@angular/core';
+
 
 @Component({
   selector: 'log-monitor-button',

@@ -1,10 +1,9 @@
 import { Component, Input, HostBinding } from '@angular/core';
-
 import * as types from './types';
+
 
 @Component({
   selector: 'ngrx-json-node',
-  directives: [ JsonNodeComponent ],
   styles: [`
     :host {
       display: block;

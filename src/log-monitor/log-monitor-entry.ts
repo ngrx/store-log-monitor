@@ -1,11 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-
 import { LogEntryItem } from './log-entry-item';
-import { JsonTreeComponent } from '../json-tree/json-tree';
+
 
 @Component({
   selector: 'log-monitor-entry',
-  directives: [ JsonTreeComponent ],
   template: `
     <div class="title-bar" [ngClass]="{ collapsed: item.collapsed }" (click)="handleToggle()">
       {{ item.action.type }}
@@ -36,7 +34,7 @@ import { JsonTreeComponent } from '../json-tree/json-tree';
 })
 export class LogMonitorEntryComponent {
   private _item: LogEntryItem;
-  private stateActionPair;
+  public stateActionPair;
 
   @Input() expandEntries: boolean = false;
   @Input() disabled: boolean = false;

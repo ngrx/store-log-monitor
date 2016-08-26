@@ -3,8 +3,8 @@ import 'rxjs/add/operator/map';
 import { Component, Input, Output, Renderer } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-
 import { KEYCODES } from './keycodes';
+
 
 export interface ParsedCommand {
   name?: string;
@@ -24,7 +24,7 @@ export interface ParsedCommand {
   }
 })
 export class CommanderComponent {
-  private keydown$ = new Subject<KeyboardEvent>();
+  public keydown$ = new Subject<KeyboardEvent>();
   private _ignoreTags = ['INPUT', 'SELECT', 'TEXTAREA'];
 
   @Input() shortcut: string;
