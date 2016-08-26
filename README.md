@@ -15,30 +15,31 @@ npm install @ngrx/store-log-monitor --save
 
 *Configure the monitor when instrumenting store*
 ```ts
-import { instrumentStore } from '@ngrx/store-devtools';
-import { useLogMonitor } from '@ngrx/store-log-monitor';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreLogMonitorModule, useLogMonitor } from '@ngrx/store-log-monitor';
 
-bootstrap(App, [
-	instrumentStore({
-		monitor: useLogMonitor({
-			visible: true,
-			position: 'right'
-		})
-	})
-]);
+@NgModule({
+  imports: [
+    StoreDevtoolsModule.instrumentStore({
+      monitor: useLogMonitor({
+        visible: true,
+        position: 'right'
+      })
+    }),
+    StoreLogMonitorModule
+  ]
+})
+export class AppModule { }
 ```
 
-*Add the StoreLogMonitorComponent to your app*
+*Use the StoreLogMonitor component in your app*
 
 ```ts
-import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
-
 @Component({
-	selector: 'app',
-	directives: [ StoreLogMonitorComponent ],
-	template: `
-		<ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
-	`
+  selector: 'app',
+  template: `
+    <ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
+  `
 })
-export class App { }
+export class AppComponent { }
 ```

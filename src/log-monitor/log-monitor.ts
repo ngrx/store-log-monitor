@@ -2,14 +2,11 @@ import 'rxjs/add/operator/map';
 import { Component, Input  } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { StoreDevtools } from '@ngrx/store-devtools';
-
 import { LogEntryItem } from './log-entry-item';
-import { LogMonitorEntryComponent } from './log-monitor-entry';
-import { LogMonitorButtonComponent } from './log-monitor-button';
+
 
 @Component({
   selector: 'log-monitor',
-  directives: [ LogMonitorEntryComponent, LogMonitorButtonComponent ],
   styles: [`
     :host {
       display: block;
@@ -46,7 +43,7 @@ import { LogMonitorButtonComponent } from './log-monitor-button';
   `],
   template: `
     <div class="button-bar">
-      <log-monitor-button (action)="handleReset()" [disabled]="canReset$ | async">
+      <log-monitor-button (action)="handleReset()">
         Reset
       </log-monitor-button>
 
@@ -76,10 +73,10 @@ import { LogMonitorButtonComponent } from './log-monitor-button';
 export class LogMonitorComponent {
   @Input() expandEntries: boolean = true;
 
-  private items$: Observable<LogEntryItem[]>;
-  private canRevert$: Observable<boolean>;
-  private canSweep$: Observable<boolean>;
-  private canCommit$: Observable<boolean>;
+  public items$: Observable<LogEntryItem[]>;
+  public canRevert$: Observable<boolean>;
+  public canSweep$: Observable<boolean>;
+  public canCommit$: Observable<boolean>;
 
   constructor(private devtools: StoreDevtools) {
     this.canRevert$ = devtools.liftedState.map(s => !(s.computedStates.length > 1 ));

@@ -1,6 +1,7 @@
 import { combineReducers, ActionReducer } from '@ngrx/store';
 import { DockActions } from './actions';
 
+
 export const POSITIONS = ['left', 'top', 'right', 'bottom'];
 export type PositionsType = 'left' | 'top' | 'right' | 'bottom';
 

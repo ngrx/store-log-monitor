@@ -6,18 +6,13 @@ import { StoreDevtools } from '@ngrx/store-devtools';
 import { Component, ChangeDetectionStrategy, Input} from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-
 import { DockState } from './reducer';
-import { CommanderComponent } from './commander';
-import { DockComponent } from './dock';
 import { DockActions } from './actions';
 
 
 @Component({
   selector: 'dock-monitor',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  directives: [ DockComponent, CommanderComponent ],
-  providers: [ DockActions ],
   template: `
     <ngrx-commander [shortcut]="toggleCommand" (command)="toggle$.next($event)"></ngrx-commander>
     <ngrx-commander [shortcut]="positionCommand" (command)="changePosition$.next($event)"></ngrx-commander>
@@ -45,11 +40,11 @@ export class DockMonitorComponent {
   position$ = this.state$.map(s => s.position).distinctUntilChanged();
   size$ = this.state$.map(s => s.size).distinctUntilChanged();
 
-  private toggle$ = new Subject();
+  public toggle$ = new Subject();
   private toggleAction$ = this.toggle$
     .map(() => this.actions.toggleVisibility());
 
-  private changePosition$ = new Subject();
+  public changePosition$ = new Subject();
   private positionAction$ = this.changePosition$
     .map(() => this.actions.changePosition());
 }
