@@ -4,15 +4,11 @@
 
 ```
 npm install
-typings install
-npm run clean-ng2
 ```
 
 ### Testing
 
-```
-npm test
-```
+No tests provided yet
 
 ## Submitting Pull Requests
 
