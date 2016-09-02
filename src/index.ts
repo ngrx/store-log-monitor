@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DockMonitorModule } from './dock-monitor';
-import { LogMonitorModule } from './log-monitor';
+import { DockMonitorModule } from './dock-monitor/index';
+import { LogMonitorModule } from './log-monitor/index';
 import { StoreLogMonitorComponent } from './store-log-monitor';
 
 
