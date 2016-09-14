@@ -1,7 +1,8 @@
-import 'rxjs/add/operator/map';
 import { Component, Input  } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operator/map';
 import { StoreDevtools } from '@ngrx/store-devtools';
+import { select } from '@ngrx/core/operator/select';
 import { LogEntryItem } from './log-entry-item';
 
 
@@ -79,12 +80,11 @@ export class LogMonitorComponent {
   public canCommit$: Observable<boolean>;
 
   constructor(private devtools: StoreDevtools) {
-    this.canRevert$ = devtools.liftedState.map(s => !(s.computedStates.length > 1 ));
-    this.canSweep$ = devtools.liftedState.map(s => !(s.skippedActionIds.length > 0));
-    this.canCommit$ = devtools.liftedState.map(s => !(s.computedStates.length > 1));
+    this.canRevert$ = select.call(devtools.liftedState, s => !(s.computedStates.length > 1 ));
+    this.canSweep$ = select.call(devtools.liftedState, s => !(s.skippedActionIds.length > 0));
+    this.canCommit$ = select.call(devtools.liftedState, s => !(s.computedStates.length > 1));
 
-    this.items$ = devtools.liftedState
-      .map(({ actionsById, skippedActionIds, stagedActionIds, computedStates }) => {
+    this.items$ = map.call(devtools.liftedState, ({ actionsById, skippedActionIds, stagedActionIds, computedStates }) => {
         const actions = [];
 
         for (let i = 0; i < stagedActionIds.length; i++) {

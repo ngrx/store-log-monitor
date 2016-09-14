@@ -1,8 +1,7 @@
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import { Component, Input, Output, Renderer } from '@angular/core';
+import { Component, Input, Output, Renderer, EventEmitter } from '@angular/core';
+import { filter } from 'rxjs/operator/filter';
+import { map } from 'rxjs/operator/map';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { KEYCODES } from './keycodes';
 
 
@@ -20,18 +19,28 @@ export interface ParsedCommand {
   template: '',
   styles: [':host{ display: none }'],
   host: {
-    '(document:keydown)': 'keydown$.next($event)'
+    '(document:keydown)': 'keydown$.emit($event)'
   }
 })
 export class CommanderComponent {
-  public keydown$ = new Subject<KeyboardEvent>();
+  public keydown$ = new EventEmitter<KeyboardEvent>();
   private _ignoreTags = ['INPUT', 'SELECT', 'TEXTAREA'];
 
   @Input() shortcut: string;
-  @Output() command: Observable<{ command: string }> = this.keydown$
-    .filter(e => this._ignoreTags.indexOf((e.target as HTMLElement).tagName) < 0)
-    .filter(e => !((e.target as HTMLElement).isContentEditable))
-    .filter(e => {
+  @Output() command: Observable<{ command: string }>;
+
+  constructor() {
+    this.keydown$ = new EventEmitter<KeyboardEvent>();
+
+    const filtered$ = filter.call(this.keydown$, (e: KeyboardEvent) => {
+      if (this._ignoreTags.indexOf((e.target as HTMLElement).tagName) !== -1) {
+        return false;
+      }
+
+      if ((e.target as HTMLElement).isContentEditable) {
+        return false;
+      }
+
       const command = this.parseCommand(this.shortcut);
 
       if (!command) {
@@ -45,12 +54,14 @@ export class CommanderComponent {
         command.ctrl === e.ctrlKey &&
         command.meta === e.metaKey &&
         command.shift === e.shiftKey;
-    })
-    .map(e => {
+    });
+
+    this.command = map.call(filtered$, e => {
       e.preventDefault();
 
       return { command: this.shortcut };
     });
+  }
 
   parseCommand(s: string): ParsedCommand {
     const keyString = s.trim().toLowerCase();

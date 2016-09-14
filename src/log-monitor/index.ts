@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { JsonTreeModule } from '../json-tree';
+import { JsonTreeModule } from '../json-tree/index';
 import { LogMonitorComponent } from './log-monitor';
 import { LogMonitorButtonComponent } from './log-monitor-button';
 import { LogMonitorEntryComponent } from './log-monitor-entry';

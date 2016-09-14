@@ -1,12 +1,12 @@
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/distinctUntilChanged';
+import { Component, ChangeDetectionStrategy, Input, OnDestroy, EventEmitter } from '@angular/core';
+import { select } from '@ngrx/core/operator/select';
 import { StoreDevtools } from '@ngrx/store-devtools';
-import { Component, ChangeDetectionStrategy, Input} from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { DockState } from './reducer';
+import { Subscription } from 'rxjs/Subscription';
+import { merge } from 'rxjs/observable/merge';
+import { map } from 'rxjs/operator/map';
+import { DockState, PositionsType } from './reducer';
 import { DockActions } from './actions';
 
 
@@ -14,37 +14,42 @@ import { DockActions } from './actions';
   selector: 'dock-monitor',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ngrx-commander [shortcut]="toggleCommand" (command)="toggle$.next($event)"></ngrx-commander>
-    <ngrx-commander [shortcut]="positionCommand" (command)="changePosition$.next($event)"></ngrx-commander>
+    <ngrx-commander [shortcut]="toggleCommand" (command)="toggle$.emit($event)"></ngrx-commander>
+    <ngrx-commander [shortcut]="positionCommand" (command)="changePosition$.emit($event)"></ngrx-commander>
 
     <ngrx-dock [visible]="visible$ | async" [position]="position$ | async" [size]="size$ | async">
       <ng-content></ng-content>
     </ngrx-dock>
   `
 })
-export class DockMonitorComponent {
+export class DockMonitorComponent implements OnDestroy {
   @Input() toggleCommand: string;
   @Input() positionCommand: string;
 
-  constructor(
-    private tools: StoreDevtools,
-    private actions: DockActions
-  ) {
-    Observable
-      .merge(this.toggleAction$, this.positionAction$)
-      .subscribe(this.tools);
+  state$: Observable<DockState>;
+  visible$: Observable<boolean>;
+  position$: Observable<PositionsType>;
+  size$: Observable<number>;
+  toggle$: EventEmitter<any>;
+  changePosition$: EventEmitter<any>;
+  actionsSubscription: Subscription;
+
+  constructor(tools: StoreDevtools, actions: DockActions) {
+    this.state$ = select.call(tools.liftedState, s => s.monitorState);
+    this.visible$ = select.call(this.state$, (s: DockState) => s.visible);
+    this.position$ = select.call(this.state$, (s: DockState) => s.position);
+    this.size$ = select.call(this.state$, (s: DockState) => s.size);
+
+    this.toggle$ = new EventEmitter();
+    this.changePosition$ = new EventEmitter();
+
+    this.actionsSubscription = merge(
+      map.call(this.toggle$, () => actions.toggleVisibility()),
+      map.call(this.changePosition$, () => actions.changePosition())
+    ).subscribe(tools);
   }
 
-  state$ = this.tools.liftedState.map<DockState>(s => s.monitorState);
-  visible$ = this.state$.map(s => s.visible).distinctUntilChanged();
-  position$ = this.state$.map(s => s.position).distinctUntilChanged();
-  size$ = this.state$.map(s => s.size).distinctUntilChanged();
-
-  public toggle$ = new Subject();
-  private toggleAction$ = this.toggle$
-    .map(() => this.actions.toggleVisibility());
-
-  public changePosition$ = new Subject();
-  private positionAction$ = this.changePosition$
-    .map(() => this.actions.changePosition());
+  ngOnDestroy() {
+    this.actionsSubscription.unsubscribe();
+  }
 }
