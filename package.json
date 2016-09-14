@@ -1,6 +1,6 @@
 {
   "name": "@ngrx/store-log-monitor",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Store log monitor for @ngrx/store-devtools",
   "main": "./bundles/store-log-monitor.umd.js",
   "module": "./index.js",
