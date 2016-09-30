@@ -1,4 +1,4 @@
-import { compose } from '@ngrx/core/compose';
+import { compose } from '@ngrx/core';
 
 
 export const KNOWN = {
