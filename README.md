@@ -23,6 +23,7 @@ export function instrumentOptions() {
     monitor: useLogMonitor({ visible: true, position: 'right' })
   };
 }
+
 @NgModule({
   imports: [
     StoreDevtoolsModule.instrumentStore(instrumentOptions),
