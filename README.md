@@ -18,14 +18,14 @@ npm install @ngrx/store-log-monitor --save
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreLogMonitorModule, useLogMonitor } from '@ngrx/store-log-monitor';
 
+export function instrumentOptions() {
+  return {
+    monitor: useLogMonitor({ visible: true, position: 'right' })
+  };
+}
 @NgModule({
   imports: [
-    StoreDevtoolsModule.instrumentStore({
-      monitor: useLogMonitor({
-        visible: true,
-        position: 'right'
-      })
-    }),
+    StoreDevtoolsModule.instrumentStore(instrumentOptions),
     StoreLogMonitorModule
   ]
 })
