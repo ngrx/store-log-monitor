@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, OnDestroy, EventEmitter } from '@angular/core';
-import { select } from '@ngrx/core/operator/select';
+import { select } from '@ngrx/core';
 import { StoreDevtools } from '@ngrx/store-devtools';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';

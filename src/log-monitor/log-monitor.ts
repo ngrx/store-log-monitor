@@ -2,7 +2,7 @@ import { Component, Input  } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operator/map';
 import { StoreDevtools } from '@ngrx/store-devtools';
-import { select } from '@ngrx/core/operator/select';
+import { select } from '@ngrx/core';
 import { LogEntryItem } from './log-entry-item';
 
 
