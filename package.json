@@ -58,6 +58,7 @@
     "@angular/platform-server": "^2.0.0-rc.6",
     "@ngrx/core": "^1.0.0",
     "@ngrx/store": "^2.1.2",
+    "@ngrx/store-devtools": "^3.1.0",
     "@types/jasmine": "^2.2.33",
     "@types/node": "^6.0.38",
     "awesome-typescript-loader": "^2.2.1",
