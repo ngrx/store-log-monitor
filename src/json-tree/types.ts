@@ -11,7 +11,8 @@ export const KNOWN = {
   String: 'string',
   Symbol: 'symbol',
   Function: 'function',
-  Iterable: 'iterable'
+  Iterable: 'iterable',
+  Date: 'date',
 };
 
 export function getTypeOf(object: any) {
@@ -20,6 +21,9 @@ export function getTypeOf(object: any) {
   if (literalType === 'object') {
     if (Array.isArray(object)) {
       return KNOWN.Array;
+    }
+    if(object instanceof Date){
+      return KNOWN.Date;
     }
     if (object === null) {
       return KNOWN.Null;
@@ -50,7 +54,8 @@ const labelFactoriesForTypes = {
   [KNOWN.String]: withQuotes,
   [KNOWN.Symbol]: compose(withQuotes, toString),
   [KNOWN.Function]: typeIdentity(KNOWN.Function),
-  [KNOWN.Iterable]: compose(typeIndicator('()'), lengthLabel('entry', 'entries'), arrayLength, iterableToArray)
+  [KNOWN.Iterable]: compose(typeIndicator('()'), lengthLabel('entry', 'entries'), arrayLength, iterableToArray),
+  [KNOWN.Date]: toString,
 };
 
 const lookupLabelForType = (type: string) => labelFactoriesForTypes[type];
