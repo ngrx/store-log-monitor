@@ -11,6 +11,7 @@ Port of [redux-devtools-log-monitor](https://github.com/gaearon/redux-devtools-l
 *Install @ngrx/store-log-monitor from npm*
 ```bash
 npm install @ngrx/store-log-monitor --save
+npm install @ngrx/store-log-devtools --save
 ```
 
 *Configure the monitor when instrumenting store*
@@ -26,7 +27,10 @@ export function instrumentOptions() {
 
 @NgModule({
   imports: [
-    StoreDevtoolsModule.instrumentStore(instrumentOptions),
+    StoreDevtoolsModule.instrument({
+            maxAge: 25 //  Retains last 25 states
+        }),
+    StoreDevtoolsModule.instrument(instrumentOptions),
     StoreLogMonitorModule
   ]
 })
@@ -44,3 +48,8 @@ export class AppModule { }
 })
 export class AppComponent { }
 ```
+
+### Run
+
+Run your app and the log monitor bar should display inside your app. You can hide/show the monitor by pressing **ctrl-h** keys and change its position by pressing **ctrl-m** keys.
+ 
